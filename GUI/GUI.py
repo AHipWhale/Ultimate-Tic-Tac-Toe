@@ -1,5 +1,7 @@
 from tkinter import *
 import tkinter.messagebox
+import webbrowser
+
 tk = Tk()
 tk.title("Ultimate Tic-Tac-Toe")
 
@@ -298,6 +300,63 @@ def Grid9():
     G9_button9 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=H, width=W, command=lambda: btnClick(G9_button9))
     G9_button9.grid(row=13, column=10)
 
+def PVE():
+    label_p = Label(tk, text="Player:", font='Times 15 bold', bg='white', fg='black', height=1, width=8)
+    label_p.grid(row=1, column=0)
+
+    player_name = Entry(tk, textvariable=p1, bd=5)
+    player_name.grid(row=1, column=1, columnspan=8)
+
+    start_knop = Button(tk, text="Start Game", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2", command=lambda: (destroy_buttons([label_p, player_name, start_knop, terug_knop]), make_Grids()))
+    start_knop.grid(row=3, column=0)
+
+    terug_knop = Button(tk, text="Terug", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2", command=lambda: (destroy_buttons([label_p, player_name, start_knop, terug_knop]), startPagina()))
+    terug_knop.grid(row=3, column=1)
+
+def PVP():
+    label_p1 = Label(tk, text="Player 1:", font='Times 15 bold', bg='white', fg='black', height=1, width=8)
+    label_p1.grid(row=1, column=0)
+    label_p2 = Label(tk, text="Player 2:", font='Times 15 bold', bg='white', fg='black', height=1, width=8)
+    label_p2.grid(row=2, column=0)
+
+    player1_name = Entry(tk, textvariable=p1, bd=5)
+    player1_name.grid(row=1, column=1, columnspan=8)
+    player2_name = Entry(tk, textvariable=p1, bd=5)
+    player2_name.grid(row=2, column=1, columnspan=8)
+
+    start_knop = Button(tk, text="Start Game", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2",
+                        command=lambda: (destroy_buttons([label_p1, player1_name, label_p2, player2_name, start_knop, terug_knop]), make_Grids()))
+    start_knop.grid(row=3, column=0)
+
+    terug_knop = Button(tk, text="Terug", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2",
+                        command=lambda: (
+                        destroy_buttons([label_p1, player1_name, label_p2, player2_name, start_knop, terug_knop]), startPagina()))
+    terug_knop.grid(row=3, column=1)
+
+def hyperlink(url):
+    webbrowser.open_new(url)
+
+def Regels():
+    regels = Label(tk, text="*Elk klein 3x3 bord word verwezen als klein bord en het grote 3x3 bord word verwezen als een groot bord*\n"
+                             "\n- Het spel begint met Player 1 die één van de 81 lege vakjes kiest om daar zijn X te zetten.\n "
+                             "Deze zet stuurt de tegenstander naar de relatieve locatie."
+                             "\n- Als een zet gespeeld word dat er voor zorgt dat het kleine bord word gewonnen,"
+                             "\n dan word het kleine bord gemarkeerd als een overwinning voor de speler op het grote bord"
+                             "\n- Wanneer een klein bord is gewonnen of vol zit dan word er niet meer op dat bord gespeeld. "
+                             "\nAls een speler naar zo'n bord word gestuurd dan mag die speler in elk ander bord een zet zetten."
+                             "\n- Het spel eindigd als een speler het grote bord wint of als er geen legale zetten over blijven, "
+                             "\nin dit geval is het dan een gelijk spel.", font='Times 15 bold', fg='black', height=11, width=80)
+    regels.grid(row=1, column=0)
+
+    link = Button(tk, text="Klik voor video uitleg", font='Times 15 bold',  fg='blue', cursor="hand2", command=lambda:hyperlink("https://www.youtube.com/watch?v=37PC0bGMiTI"))
+    link.grid(row=2, column=0)
+
+    terug_knop = Button(tk, text="Terug", font='Times 10 bold', bg='gray', fg='white', cursor="hand2",
+                        command=lambda: (
+                            destroy_buttons([regels, terug_knop, link]),
+                            startPagina()))
+    terug_knop.grid(row=3, column=0)
+
 def make_Grids():
     Grid1()
     Grid2()
@@ -309,14 +368,30 @@ def make_Grids():
     Grid8()
     Grid9()
 
-make_Grids()
+    # Vertical gaps
+    gap(3, 3)
+    gap(7, 7)
 
-#Vertical gaps
-gap(3, 3)
-gap(7, 7)
+    # Horizontal gaps
+    gap(6, 6)
+    gap(10, 6)
 
-#Horizontal gaps
-gap(6, 6)
-gap(10, 6)
+def destroy_buttons(knoppen):
+    for knop in knoppen:
+        knop.destroy()
 
+def startPagina():
+    PVP_button = Button(tk, text="PVP", font='Times 10 bold', bg='gray', fg='white', cursor="hand2", height=1, width=50, command=lambda: (destroy_buttons([PVP_button, PVE_button, Regels_button, tekst]), PVP()))
+    PVP_button.grid(row=1, column=0)
+
+    PVE_button = Button(tk, text="PVE", font='Times 10 bold', bg='gray', fg='white', cursor="hand2", height=1, width=50, command=lambda: (destroy_buttons([PVE_button, PVP_button, Regels_button, tekst]), PVE()))
+    PVE_button.grid(row=2, column=0)
+
+    Regels_button = Button(tk, text="Regels", font='Times 10 bold', bg='gray', fg='white', cursor="hand2", height=1, width=50, command=lambda: (destroy_buttons([PVE_button, PVP_button, Regels_button, tekst]), Regels()))
+    Regels_button.grid(row=3, column=0)
+
+    tekst = Label(tk, text= "Welkom bij Ultimate Tic-Tac-Toe", fg='black')
+    tekst.grid(row=0, column=0)
+
+startPagina()
 tk.mainloop()
