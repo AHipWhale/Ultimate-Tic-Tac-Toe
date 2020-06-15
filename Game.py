@@ -1,5 +1,7 @@
-import tkinter
+from tkinter import *
+
 import tkinter.messagebox
+firstMove = True
 
 def checkForWin(grid):
     button1 = grid[0]
@@ -13,16 +15,16 @@ def checkForWin(grid):
     button9 = grid[8]
 
     if (button1['text'] == 'X' and button2['text'] == 'X' and button3['text'] == 'X' or
-            button4['text'] == 'X' and button5['text'] == 'X' and button6['text'] == 'X' or
-            button7['text'] == 'X' and button8['text'] == 'X' and button9['text'] == 'X' or
-            button1['text'] == 'X' and button5['text'] == 'X' and button9['text'] == 'X' or
-            button3['text'] == 'X' and button5['text'] == 'X' and button7['text'] == 'X' or
-            button1['text'] == 'X' and button2['text'] == 'X' and button3['text'] == 'X' or
-            button1['text'] == 'X' and button4['text'] == 'X' and button7['text'] == 'X' or
-            button2['text'] == 'X' and button5['text'] == 'X' and button8['text'] == 'X' or
-            button7['text'] == 'X' and button6['text'] == 'X' and button9['text'] == 'X'):
+          button4['text'] == 'X' and button5['text'] == 'X' and button6['text'] == 'X' or
+          button7['text'] == 'X' and button8['text'] == 'X' and button9['text'] == 'X' or
+          button1['text'] == 'X' and button4['text'] == 'X' and button7['text'] == 'X' or
+          button2['text'] == 'X' and button5['text'] == 'X' and button8['text'] == 'X' or
+          button3['text'] == 'X' and button6['text'] == 'X' and button9['text'] == 'X' or
+          button1['text'] == 'X' and button5['text'] == 'X' and button9['text'] == 'X' or
+          button3['text'] == 'X' and button5['text'] == 'X' and button7['text'] == 'X'):
             # tkinter.messagebox.showinfo("Tic-Tac-Toe", pa)
-                tkinter.messagebox.showinfo("Tic-Tac-Toe", "Player A Wins")
+        # tkinter.messagebox.showinfo("Tic-Tac-Toe", "Player A Wins")
+        return "X"
 
         # elif flag == 8:
         #     tkinter.messagebox.showinfo("Tic-Tac-Toe", "It is a Tie")
@@ -30,11 +32,33 @@ def checkForWin(grid):
     elif (button1['text'] == 'O' and button2['text'] == 'O' and button3['text'] == 'O' or
           button4['text'] == 'O' and button5['text'] == 'O' and button6['text'] == 'O' or
           button7['text'] == 'O' and button8['text'] == 'O' and button9['text'] == 'O' or
-          button1['text'] == 'O' and button5['text'] == 'O' and button9['text'] == 'O' or
-          button3['text'] == 'O' and button5['text'] == 'O' and button7['text'] == 'O' or
-          button1['text'] == 'O' and button2['text'] == 'O' and button3['text'] == 'O' or
           button1['text'] == 'O' and button4['text'] == 'O' and button7['text'] == 'O' or
           button2['text'] == 'O' and button5['text'] == 'O' and button8['text'] == 'O' or
-          button7['text'] == 'O' and button6['text'] == 'O' and button9['text'] == 'O'):
-          # tkinter.messagebox.showinfo("Tic-Tac-Toe", playerb)
-            tkinter.messagebox.showinfo("Tic-Tac-Toe", "Player B wins")
+          button3['text'] == 'O' and button6['text'] == 'O' and button9['text'] == 'O' or
+          button1['text'] == 'O' and button5['text'] == 'O' and button9['text'] == 'O' or
+          button3['text'] == 'O' and button5['text'] == 'O' and button7['text'] == 'O'):
+        # tkinter.messagebox.showinfo("Tic-Tac-Toe", "Player B Wins")
+        return "O"
+
+def denyAcces(allGrids):
+    for grid in allGrids:
+        for ding in grid:
+            ding["state"] = DISABLED
+
+def allowAcces(allGrids):
+    for grid in allGrids:
+        for ding in grid:
+            ding["state"] = NORMAL
+            ding["bg"] = "gray"
+
+def changeAcces(nextGrid, allGrids):
+    denyAcces(allGrids)
+    for ding in nextGrid:
+        ding["state"] = NORMAL
+
+def checkForFullGrid(nextGrid):
+    full = set()
+    for ding in nextGrid:
+        full.add(ding["text"])
+    if len(full) == 1 and full != {' '}:
+        return True
