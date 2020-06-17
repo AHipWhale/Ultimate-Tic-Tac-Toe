@@ -1,36 +1,41 @@
 import tkinter.messagebox
-from Game import checkForWin
+from Game import *
 from tkinter import *
 import webbrowser
 
 tk = Tk()
 tk.title("Ultimate Tic-Tac-Toe")
 
-pa = StringVar()
-playerb = StringVar()
 p1 = StringVar()
-p2 = ''
+p2 = StringVar()
 
 bclick = '1'
-flag = 0
 
 def btnClick(buttons, next_Grid, thisGrid):
-    global bclick, flag, player2_name, player1_name, playerb, pa
+    global bclick, p1, p2
     if buttons["text"] == " " and bclick == '1':
         buttons["text"] = "X"
         bclick = '2'
-        playerb = p2 + " Wins!"
-        pa = p1.get() + " Wins!"
-        checkForWin(thisGrid)
+
+        checkForWinReturn = checkForGridWin(thisGrid)
+        if checkForWinReturn == "X":
+            wonGrid(thisGrid, "X")
+
         nextGrid(next_Grid, thisGrid)
-        flag += 1
+        if checkForFullGrid(next_Grid):
+            allowAcces(allGrids)
 
     elif buttons["text"] == " " and bclick == '2':
         buttons["text"] = "O"
         bclick = '1'
-        checkForWin(thisGrid)
+
+        checkForWinReturn = checkForGridWin(thisGrid)
+        if checkForWinReturn == "O":
+            wonGrid(thisGrid, "O")
+
         nextGrid(next_Grid, thisGrid)
-        flag += 1
+        if checkForFullGrid(next_Grid):
+            allowAcces(allGrids)
     else:
         tkinter.messagebox.showinfo("Ultimate Tic-Tac-Toe", "Button already Clicked!")
 
@@ -308,7 +313,7 @@ def make_Grids():
     gap(6, 6)
     gap(10, 6)
 
-    global grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9
+    global grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9, allGrids
     grid1 = [G1_button1, G1_button2, G1_button3, G1_button4, G1_button5, G1_button6, G1_button7, G1_button8, G1_button9]
     grid2 = [G2_button1, G2_button2, G2_button3, G2_button4, G2_button5, G2_button6, G2_button7, G2_button8, G2_button9]
     grid3 = [G3_button1, G3_button2, G3_button3, G3_button4, G3_button5, G3_button6, G3_button7, G3_button8, G3_button9]
@@ -318,19 +323,21 @@ def make_Grids():
     grid7 = [G7_button1, G7_button2, G7_button3, G7_button4, G7_button5, G7_button6, G7_button7, G7_button8, G7_button9]
     grid8 = [G8_button1, G8_button2, G8_button3, G8_button4, G8_button5, G8_button6, G8_button7, G8_button8, G8_button9]
     grid9 = [G9_button1, G9_button2, G9_button3, G9_button4, G9_button5, G9_button6, G9_button7, G9_button8, G9_button9]
+    allGrids = {"Grid1":grid1, "Grid2":grid2, "Grid3":grid3, "Grid4":grid4, "Grid5":grid5, "Grid6":grid6, "Grid7":grid7, "Grid8":grid8, "Grid9":grid9}
 
 def nextGrid(next_Grid, this_grid):
-    for ding in next_Grid:
-        ding["bg"] = "lightgray"
+    for vak in next_Grid:
+        vak["bg"] = "lightgray"
     if this_grid[0] != next_Grid[0]:
         thisGrid(this_grid)
+    changeAcces(next_Grid, allGrids)
 
 def thisGrid(Grid):
-    for ding in Grid:
-        ding["bg"] = "gray"
+    for vak in Grid:
+        vak["bg"] = "gray"
 
 def PVE():
-    global p2
+    global p1, p2
     p2 = "Ai"
 
     label_p = Label(tk, text="Player:", font='Times 15 bold', bg='white', fg='black', height=1, width=8)
@@ -346,6 +353,7 @@ def PVE():
     terug_knop.grid(row=3, column=1)
 
 def PVP():
+    global p1, p2
     label_p1 = Label(tk, text="Player 1:", font='Times 15 bold', bg='white', fg='black', height=1, width=8)
     label_p1.grid(row=1, column=0)
     label_p2 = Label(tk, text="Player 2:", font='Times 15 bold', bg='white', fg='black', height=1, width=8)
@@ -406,6 +414,11 @@ def startPagina():
 
     tekst = Label(tk, text= "Welkom bij Ultimate Tic-Tac-Toe", fg='black')
     tekst.grid(row=0, column=0)
+
+def wonGrid(grid, symbol):
+    for vak in grid:
+        vak['text'] = symbol
+    checkForGameWin(allGrids, grid, symbol, p1, p2)
 
 startPagina()
 tk.mainloop()
