@@ -13,9 +13,13 @@ grid9 = ''
 
 flag = 0
 
+againstAi = None
+
 def checkForGridWin(grid):
     global flag
-    checkForTie(grid)
+    if againstAi == False:
+        checkForTie(grid)
+
     if (grid[0]['text'] == 'X' and grid[1]['text'] == 'X' and grid[2]['text'] == 'X' or
           grid[3]['text'] == 'X' and grid[4]['text'] == 'X' and grid[5]['text'] == 'X' or
           grid[6]['text'] == 'X' and grid[7]['text'] == 'X' and grid[8]['text'] == 'X' or
@@ -44,10 +48,21 @@ def checkForTie(grid):
     for vak in grid:
         if vak['text'] == 'O' or vak['text'] == 'X':
             volleVakken+=1
-    if volleVakken >= 8:
+    if volleVakken == 8:
         flag += 1
         for vak in grid:
             vak['text'] = "Tie"
+        return True
+
+def checkForAiTie(grid):
+    global flag
+    volleVakken = 0
+    for vak in grid:
+        if vak['text'] == 'O' or vak['text'] == 'X':
+            volleVakken+=1
+    if volleVakken == 8:
+        flag += 1
+        return True
 
 def denyAcces(allGrids):
     for grid in allGrids:
@@ -122,3 +137,7 @@ def checkForGameWin(allGrids, grid, symbol, player1, player2):
             tkinter.messagebox.showinfo("Tic-Tac-Toe", player2.get() + " Wins!")
         else:
             tkinter.messagebox.showinfo("Tic-Tac-Toe", player2 + " Wins!")
+
+def changeAgainstAi(value):
+    global againstAi
+    againstAi = value

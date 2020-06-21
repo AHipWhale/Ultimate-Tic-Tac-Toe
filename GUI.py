@@ -1,4 +1,6 @@
 import tkinter.messagebox
+
+from AI import *
 from Game import *
 from tkinter import *
 import webbrowser
@@ -9,9 +11,16 @@ tk.title("Ultimate Tic-Tac-Toe")
 p1 = StringVar()
 p2 = StringVar()
 
+singlePlayerMode = False
+
 bclick = '1'
 
-def btnClick(buttons, next_Grid, thisGrid):
+def changeMode(TrueOrFalse):
+    global singlePlayerMode, againstAi
+    singlePlayerMode = TrueOrFalse
+    changeAgainstAi(TrueOrFalse)
+
+def btnClick_PVP(buttons, next_Grid, thisGrid):
     global bclick, p1, p2
     if buttons["text"] == " " and bclick == '1':
         buttons["text"] = "X"
@@ -38,6 +47,32 @@ def btnClick(buttons, next_Grid, thisGrid):
             allowAcces(allGrids)
     else:
         tkinter.messagebox.showinfo("Ultimate Tic-Tac-Toe", "Button already Clicked!")
+
+def btnClick_PVE(buttons, next_Grid, thisGrid):
+    global bclick, p1, p2
+    if buttons["text"] == " " and bclick == '1':
+        buttons["text"] = "X"
+
+        checkForWinReturn = checkForGridWin(thisGrid)
+        if checkForWinReturn == "X":
+            wonGrid(thisGrid, "X")
+
+        nextGrid(next_Grid, thisGrid)
+        if checkForFullGrid(next_Grid):
+            allowAcces(allGrids)
+
+        play(next_Grid, allGrids)
+        checkForTie(thisGrid)
+        if checkForGridWin(next_Grid) == 'O':
+            wonGrid(next_Grid, 'O')
+    else:
+        tkinter.messagebox.showinfo("Ultimate Tic-Tac-Toe", "Button already Clicked!")
+
+def btnClick(buttons, next_Grid, thisGrid):
+    if singlePlayerMode == True:
+        btnClick_PVE(buttons, next_Grid, thisGrid)
+    else:
+        btnClick_PVP(buttons, next_Grid, thisGrid)
 
 buttons = StringVar()
 
@@ -326,11 +361,14 @@ def make_Grids():
     allGrids = {"Grid1":grid1, "Grid2":grid2, "Grid3":grid3, "Grid4":grid4, "Grid5":grid5, "Grid6":grid6, "Grid7":grid7, "Grid8":grid8, "Grid9":grid9}
 
 def nextGrid(next_Grid, this_grid):
-    for vak in next_Grid:
-        vak["bg"] = "lightgray"
-    if this_grid[0] != next_Grid[0]:
-        thisGrid(this_grid)
-    changeAcces(next_Grid, allGrids)
+    if singlePlayerMode == False:
+        for vak in next_Grid:
+            vak["bg"] = "lightgray"
+        if this_grid[0] != next_Grid[0]:
+            thisGrid(this_grid)
+        changeAcces(next_Grid, allGrids)
+    else:
+        print(next_Grid, this_grid)
 
 def thisGrid(Grid):
     for vak in Grid:
@@ -346,7 +384,7 @@ def PVE():
     player_name = Entry(tk, textvariable=p1, bd=5)
     player_name.grid(row=1, column=1, columnspan=8)
 
-    start_knop = Button(tk, text="Start Game", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2", command=lambda: (destroy_buttons([label_p, player_name, start_knop, terug_knop]), make_Grids()))
+    start_knop = Button(tk, text="Start Game", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2", command=lambda: (destroy_buttons([label_p, player_name, start_knop, terug_knop]), changeMode(True), make_Grids()))
     start_knop.grid(row=3, column=0)
 
     terug_knop = Button(tk, text="Terug", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2", command=lambda: (destroy_buttons([label_p, player_name, start_knop, terug_knop]), startPagina()))
@@ -366,7 +404,7 @@ def PVP():
     player2_name.grid(row=2, column=1, columnspan=8)
 
     start_knop = Button(tk, text="Start Game", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2",
-                        command=lambda: (destroy_buttons([label_p1, player1_name, label_p2, player2_name, start_knop, terug_knop]), make_Grids()))
+                        command=lambda: (destroy_buttons([label_p1, player1_name, label_p2, player2_name, start_knop, terug_knop]), changeMode(False), make_Grids()))
     start_knop.grid(row=3, column=0)
 
     terug_knop = Button(tk, text="Terug", font='Times 10 bold', bg='gray', fg='white', height=1, width=13, cursor="hand2",
