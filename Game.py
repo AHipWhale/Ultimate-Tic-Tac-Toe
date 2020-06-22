@@ -13,13 +13,10 @@ grid9 = ''
 
 flag = 0
 
-againstAi = None
-
-def checkForGridWin(grid):
+def checkForGridWin(grid, checkforAi):
     global flag
     result = None
-    if againstAi == False:
-        checkForTie(grid)
+    if checkforAi == False:
         if checkForTie(grid):
             result = 'Tie'
     else:
@@ -143,7 +140,3 @@ def checkForGameWin(allGrids, grid, symbol, player1, player2):
             tkinter.messagebox.showinfo("Tic-Tac-Toe", player2.get() + " Wins!")
         else:
             tkinter.messagebox.showinfo("Tic-Tac-Toe", player2 + " Wins!")
-
-def changeAgainstAi(value):
-    global againstAi
-    againstAi = value

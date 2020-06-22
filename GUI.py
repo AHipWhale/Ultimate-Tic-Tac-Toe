@@ -18,7 +18,6 @@ bclick = '1'
 def changeMode(TrueOrFalse):
     global singlePlayerMode, againstAi
     singlePlayerMode = TrueOrFalse
-    changeAgainstAi(TrueOrFalse)
 
 def btnClick_PVP(buttons, next_Grid, thisGrid):
     global bclick, p1, p2
@@ -26,7 +25,7 @@ def btnClick_PVP(buttons, next_Grid, thisGrid):
         buttons["text"] = "X"
         bclick = '2'
 
-        checkForWinReturn = checkForGridWin(thisGrid)
+        checkForWinReturn = checkForGridWin(thisGrid, False)
         if checkForWinReturn == "X":
             wonGrid(thisGrid, "X")
 
@@ -38,7 +37,7 @@ def btnClick_PVP(buttons, next_Grid, thisGrid):
         buttons["text"] = "O"
         bclick = '1'
 
-        checkForWinReturn = checkForGridWin(thisGrid)
+        checkForWinReturn = checkForGridWin(thisGrid, False)
         if checkForWinReturn == "O":
             wonGrid(thisGrid, "O")
 
@@ -53,18 +52,18 @@ def btnClick_PVE(buttons, next_Grid, thisGrid):
     if buttons["text"] == " " and bclick == '1':
         buttons["text"] = "X"
 
-        checkForWinReturn = checkForGridWin(thisGrid)
+        checkForWinReturn = checkForGridWin(thisGrid, False)
         if checkForWinReturn == "X":
             wonGrid(thisGrid, "X")
 
         nextGrid(next_Grid, thisGrid)
         if checkForFullGrid(next_Grid):
             allowAcces(allGrids)
-        print('before')
-        bestMove(next_Grid)
-        print('after')
+        # print('before')
+        bestMove(next_Grid, allGrids)
+        # print('after')
         checkForTie(thisGrid)
-        if checkForGridWin(next_Grid) == 'O':
+        if checkForGridWin(next_Grid, False) == 'O':
             wonGrid(next_Grid, 'O')
     else:
         tkinter.messagebox.showinfo("Ultimate Tic-Tac-Toe", "Button already Clicked!")
@@ -368,8 +367,8 @@ def nextGrid(next_Grid, this_grid):
         if this_grid[0] != next_Grid[0]:
             thisGrid(this_grid)
         changeAcces(next_Grid, allGrids)
-    else:
-        print(next_Grid, this_grid)
+    # else:
+        # print(next_Grid, this_grid)
 
 def thisGrid(Grid):
     for vak in Grid:
