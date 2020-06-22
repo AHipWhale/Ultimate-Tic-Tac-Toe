@@ -1,8 +1,9 @@
+import math
 import random
 from Game import checkForGridWin, checkForAiTie, checkForFullGrid
 
 def bestMove(grid):
-    maxv = -2
+    maxv = -math.inf
 
     keuzeVak = None
 
@@ -27,7 +28,7 @@ def bestMove(grid):
                 keuzeVak = vak
     keuzeVak['text'] = 'O'
 
-def minimax(grid, depth, isMaximizing):
+def minimax(grid, depth, isMaximizing, alpha = -math.inf, beta = math.inf):
     # tie = checkForAiTie(grid)
     result = checkForGridWin(grid)
     if result is not None:
@@ -38,23 +39,29 @@ def minimax(grid, depth, isMaximizing):
         elif result == 'tie':
             return 0
     if isMaximizing == True:
-        bestScore = -2
+        bestScore = -math.inf
         for vak in grid:
             if vak['text'] == ' ':
                 vak['text'] = 'X'
-                score = minimax(grid, depth+1, False)
+                score = minimax(grid, depth+1, False, alpha, beta)
                 vak['text'] = ' '
                 bestScore = max(score, bestScore)
+                alpha = max(alpha, score)
+                if beta >= alpha:
+                    pass
         return bestScore
     else:
-        bestScore = 2
+        bestScore = math.inf
         for vak in grid:
             if vak['text'] == ' ':
                 vak['text'] = 'O'
-                score = minimax(grid, depth + 1, True)
+                score = minimax(grid, depth + 1, True, alpha, beta)
                 vak['text'] = ' '
                 bestScore = min(score, bestScore)
+                beta = min(beta, score)
                     # keuzeVak = vak
+                if alpha >= beta:
+                    pass
         return bestScore
     # minv = 2
     #
