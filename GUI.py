@@ -60,8 +60,9 @@ def btnClick_PVE(buttons, next_Grid, thisGrid):
         nextGrid(next_Grid, thisGrid)
         if checkForFullGrid(next_Grid):
             allowAcces(allGrids)
-
-        play(next_Grid, allGrids)
+        print('before')
+        bestMove(next_Grid)
+        print('after')
         checkForTie(thisGrid)
         if checkForGridWin(next_Grid) == 'O':
             wonGrid(next_Grid, 'O')
@@ -89,7 +90,7 @@ def make_Grids():
     font = 'Times 20 bold' # lettertype
 
     #Buttons of Grid 1
-    G1_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G1_button1, grid1, grid1))
+    G1_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G1_button1, grid1, grid1))
     G1_button1.grid(row=3, column=0)
 
     G1_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G1_button2, grid2, grid1))
@@ -117,7 +118,7 @@ def make_Grids():
     G1_button9.grid(row=5, column=2)
 
     #Buttons of grid 2
-    G2_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G2_button1, grid1, grid2))
+    G2_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G2_button1, grid1, grid2))
     G2_button1.grid(row=3, column=4)
 
     G2_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G2_button2, grid2, grid2))
@@ -145,7 +146,7 @@ def make_Grids():
     G2_button9.grid(row=5, column=6)
 
     #Buttons of grid 3
-    G3_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G3_button1, grid1, grid3))
+    G3_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G3_button1, grid1, grid3))
     G3_button1.grid(row=3, column=8)
 
     G3_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G3_button2, grid2, grid3))
@@ -173,7 +174,7 @@ def make_Grids():
     G3_button9.grid(row=5, column=10)
 
     #Buttons of Grid 4
-    G4_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G4_button1, grid1, grid4))
+    G4_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G4_button1, grid1, grid4))
     G4_button1.grid(row=7, column=0)
 
     G4_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G4_button2, grid2, grid4))
@@ -201,7 +202,7 @@ def make_Grids():
     G4_button9.grid(row=9, column=2)
 
     #Buttons of grid 5
-    G5_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G5_button1, grid1, grid5))
+    G5_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G5_button1, grid1, grid5))
     G5_button1.grid(row=7, column=4)
 
     G5_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G5_button2, grid2, grid5))
@@ -229,7 +230,7 @@ def make_Grids():
     G5_button9.grid(row=9, column=6)
 
     #Buttons of grid 6
-    G6_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G6_button1, grid1, grid6))
+    G6_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G6_button1, grid1, grid6))
     G6_button1.grid(row=7, column=8)
 
     G6_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G6_button2, grid2, grid6))
@@ -257,7 +258,7 @@ def make_Grids():
     G6_button9.grid(row=9, column=10)
 
     #Buttons of Grid 7
-    G7_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G7_button1, grid1, grid7))
+    G7_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G7_button1, grid1, grid7))
     G7_button1.grid(row=11, column=0)
 
     G7_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G7_button2, grid2, grid7))
@@ -285,7 +286,7 @@ def make_Grids():
     G7_button9.grid(row=13, column=2)
 
     #Buttons of grid 8
-    G8_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G8_button1, grid1, grid8))
+    G8_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G8_button1, grid1, grid8))
     G8_button1.grid(row=11, column=4)
 
     G8_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G8_button2, grid2, grid8))
@@ -313,7 +314,7 @@ def make_Grids():
     G8_button9.grid(row=13, column=6)
 
     #Buttons of grid 9
-    G9_button1 = Button(tk, text=" ", font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G9_button1, grid1, grid9))
+    G9_button1 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G9_button1, grid1, grid9))
     G9_button1.grid(row=11, column=8)
 
     G9_button2 = Button(tk, text=' ', font=font, bg=bg, fg=fg, height=H, width=W, command=lambda: btnClick(G9_button2, grid2, grid9))

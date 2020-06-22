@@ -17,8 +17,13 @@ againstAi = None
 
 def checkForGridWin(grid):
     global flag
+    result = None
     if againstAi == False:
         checkForTie(grid)
+        if checkForTie(grid):
+            result = 'Tie'
+    else:
+        checkForAiTie(grid)
 
     if (grid[0]['text'] == 'X' and grid[1]['text'] == 'X' and grid[2]['text'] == 'X' or
           grid[3]['text'] == 'X' and grid[4]['text'] == 'X' and grid[5]['text'] == 'X' or
@@ -29,7 +34,7 @@ def checkForGridWin(grid):
           grid[0]['text'] == 'X' and grid[4]['text'] == 'X' and grid[8]['text'] == 'X' or
           grid[2]['text'] == 'X' and grid[4]['text'] == 'X' and grid[6]['text'] == 'X'):
         flag += 1
-        return "X"
+        result = "X"
 
     elif (grid[0]['text'] == 'O' and grid[1]['text'] == 'O' and grid[2]['text'] == 'O' or
           grid[3]['text'] == 'O' and grid[4]['text'] == 'O' and grid[5]['text'] == 'O' or
@@ -40,7 +45,8 @@ def checkForGridWin(grid):
           grid[0]['text'] == 'O' and grid[4]['text'] == 'O' and grid[8]['text'] == 'O' or
           grid[2]['text'] == 'O' and grid[4]['text'] == 'O' and grid[6]['text'] == 'O'):
         flag += 1
-        return "O"
+        result = "O"
+    return result
 
 def checkForTie(grid):
     global flag
