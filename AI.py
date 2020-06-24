@@ -1,106 +1,91 @@
-import math
-import random
-from Game import checkForGridWin, checkForAiTie, checkForFullGrid
+from Game import checkForGridWin
 
-def bestMove(grid, allGrids):
-    maxv = -math.inf
+current_state = [[],[],[]]
 
-    keuzeVak = None
+def gridForAi(grid):
+    global current_state
+    for firstGrids in range(0,3):
+        current_state[0].append(grid[firstGrids])
+    for middleGrids in range(3,6):
+        current_state[1].append(grid[middleGrids])
+    for lastGrids in range(6,9):
+        current_state[2].append(grid[lastGrids])
 
-    if checkForFullGrid(grid) == True:
-        while True:
-            chosenkey = random.choice(list(allGrids))
-            chosenGrid = allGrids[chosenkey]
-            resultOfCheck = checkForFullGrid(chosenGrid)
-            if resultOfCheck != True:
-                keuzeGrid = chosenGrid
-                # print('voor break')
-    else:
-        keuzeGrid = grid
-    # print('na break')
-    for vak in keuzeGrid:
-        if vak['text'] == ' ':
-            vak['text'] = 'O'
-            score = minimax(keuzeGrid, 0, False)
-            vak['text'] = ' '
-            # print('max_hier')
-            if score > maxv:
-                maxv = score
-                keuzeVak = vak
-    keuzeVak['text'] = 'O'
-    checkForGridWin(keuzeGrid, True)
 
-def minimax(grid, depth, isMaximizing, alpha = -math.inf, beta = math.inf):
-    # tie = checkForAiTie(grid)
+def max_alpha_beta(grid, alpha, beta):
+    maxv = -2
+    px = None
+    py = None
+
     result = checkForGridWin(grid, True)
-    if result is not None:
-        if result == 'X':
-            return -1
-        elif result == 'O':
-            return 1
-        elif result == 'tie':
-            return 0
-    if isMaximizing == True:
-        bestScore = -math.inf
-        for vak in grid:
-            if vak['text'] == ' ':
-                vak['text'] = 'X'
-                score = minimax(grid, depth+1, False, alpha, beta)
-                vak['text'] = ' '
-                bestScore = max(score, bestScore)
-                alpha = max(alpha, score)
-                if beta >= alpha:
-                    pass
-        return bestScore
-    else:
-        bestScore = math.inf
-        for vak in grid:
-            if vak['text'] == ' ':
-                vak['text'] = 'O'
-                score = minimax(grid, depth + 1, True, alpha, beta)
-                vak['text'] = ' '
-                bestScore = min(score, bestScore)
-                beta = min(beta, score)
-                    # keuzeVak = vak
-                if alpha >= beta:
-                    pass
-        return bestScore
-    # minv = 2
-    #
-    # keuzeVak = None
-    #
-    # tie = checkForAiTie(grid)
-    # result = checkForGridWin(grid)
-    #
-    # if result == 'X':
-    #     return (-1, 0)
-    # elif result == 'O':
-    #     return (1, 0)
-    # elif tie == True:
-    #     return (0, 0)
-    #
-    # for vak in grid:
-    #     if vak['text'] == ' ':
-    #         vak['text'] = 'X'
-    #         (m, max_i) = Max(grid)
-    #         # print('min_hier')
-    #         if m < minv:
-    #             minv = m
-    #             keuzeVak = vak
-    #         vak['text'] = ' '
-    # return minv, keuzeVak
 
-# def play(grid, allGrids):
-#     if checkForFullGrid(grid) == True:
-#         while True:
-#             chosenkey = random.choice(list(allGrids))
-#             chosenGrid = allGrids[chosenkey]
-#             resultOfCheck = checkForFullGrid(chosenGrid)
-#             if resultOfCheck != True:
-#                 break
-#     else:
-#         chosenGrid = grid
-#     print(chosenGrid)
-#     (m, keuzeVak) = Max(chosenGrid)
-#     keuzeVak['text'] = 'O'
-#     return keuzeVak
+    if result == 'X':
+        return (-1, 0, 0)
+    elif result == 'O':
+        return (1, 0, 0)
+    elif result == ' ':
+        return (0, 0, 0)
+
+    for i in range(0, 3):
+        for j in range(0, 3):
+            if current_state[i][j]['text'] == ' ':
+                current_state[i][j]['text'] = 'O'
+                (m, min_i, in_j) = min_alpha_beta(grid, alpha, beta)
+                if m > maxv:
+                    maxv = m
+                    px = i
+                    py = j
+                current_state[i][j]['text'] = ' '
+
+                # Next two ifs in Max and Min are the only difference between regular algorithm and minimax
+                if maxv >= beta:
+                    return (maxv, px, py)
+
+                if maxv > alpha:
+                    alpha = maxv
+
+    return (maxv, px, py)
+
+
+def min_alpha_beta(grid, alpha, beta):
+    minv = 2
+
+    qx = None
+    qy = None
+
+    result = checkForGridWin(grid, True)
+
+    if result == 'X':
+        return (-1, 0, 0)
+    elif result == 'O':
+        return (1, 0, 0)
+    elif result == ' ':
+        return (0, 0, 0)
+
+    for i in range(0, 3):
+        for j in range(0, 3):
+            if current_state[i][j]['text'] == ' ':
+                current_state[i][j]['text'] = 'X'
+                (m, max_i, max_j) = max_alpha_beta(grid, alpha, beta)
+                if m < minv:
+                    minv = m
+                    qx = i
+                    qy = j
+                current_state[i][j]['text'] = ' '
+
+                if minv <= alpha:
+                    return (minv, qx, qy)
+
+                if minv < beta:
+                    beta = minv
+
+    return (minv, qx, qy)
+
+def play_alpha_beta(grid):
+    global player_turn, current_state
+    gridForAi(grid)
+    # draw_board()
+
+    (m, px, py) = max_alpha_beta(grid, -2, 2)
+    current_state[px][py]['text'] = 'O'
+    current_state = [[], [], []]
