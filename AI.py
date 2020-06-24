@@ -1,4 +1,6 @@
-from Game import checkForGridWin
+import random
+
+from Game import checkForGridWin, checkForFullGrid, checkForEmptyGrid
 
 current_state = [[],[],[]]
 
@@ -81,11 +83,35 @@ def min_alpha_beta(grid, alpha, beta):
 
     return (minv, qx, qy)
 
-def play_alpha_beta(grid):
+def play_alpha_beta(grid, allGrids):
     global player_turn, current_state
-    gridForAi(grid)
-    # draw_board()
+    if checkForFullGrid(grid) == True:
+        while True:
+            chosenGrid = random.choice(allGrids)
+            resultOfCheck = checkForFullGrid(chosenGrid)
+            if resultOfCheck != True:
+                break
+    else:
+        chosenGrid = grid
 
-    (m, px, py) = max_alpha_beta(grid, -2, 2)
+    gridForAi(chosenGrid)
+
+    if checkForEmptyGrid(grid) == True:
+        while True:
+            px = random.randint(0, 2)
+            py = random.randint(0, 2)
+            if checkForFullGrid(getNextGrid([px, py], allGrids)) != True:
+                break
+    else:
+        (m, px, py) = max_alpha_beta(chosenGrid, -2, 2)
+
     current_state[px][py]['text'] = 'O'
     current_state = [[], [], []]
+    return px, py
+
+def getNextGrid(grid, allGrids):
+    cordsList = [[0, 1, 2],
+                 [3, 4, 5],
+                 [6, 7, 8]]
+    cordinaten = cordsList[int(grid[0])][int(grid[1])]
+    return allGrids[cordinaten]

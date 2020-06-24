@@ -1,26 +1,20 @@
 from tkinter import *
 import tkinter.messagebox
 
-grid1 = ''
-grid2 = ''
-grid3 = ''
-grid4 = ''
-grid5 = ''
-grid6 = ''
-grid7 = ''
-grid8 = ''
-grid9 = ''
+grid1 = None
+grid2 = None
+grid3 = None
+grid4 = None
+grid5 = None
+grid6 = None
+grid7 = None
+grid8 = None
+grid9 = None
 
 flag = 0
 
 def checkForGridWin(grid, checkforAi):
     global flag
-    result = None
-    if checkforAi == False:
-        if checkForTie(grid):
-            result = 'Tie'
-    else:
-        checkForAiTie(grid)
 
     if (grid[0]['text'] == 'X' and grid[1]['text'] == 'X' and grid[2]['text'] == 'X' or
           grid[3]['text'] == 'X' and grid[4]['text'] == 'X' and grid[5]['text'] == 'X' or
@@ -31,7 +25,7 @@ def checkForGridWin(grid, checkforAi):
           grid[0]['text'] == 'X' and grid[4]['text'] == 'X' and grid[8]['text'] == 'X' or
           grid[2]['text'] == 'X' and grid[4]['text'] == 'X' and grid[6]['text'] == 'X'):
         flag += 1
-        result = "X"
+        return "X"
 
     elif (grid[0]['text'] == 'O' and grid[1]['text'] == 'O' and grid[2]['text'] == 'O' or
           grid[3]['text'] == 'O' and grid[4]['text'] == 'O' and grid[5]['text'] == 'O' or
@@ -42,8 +36,14 @@ def checkForGridWin(grid, checkforAi):
           grid[0]['text'] == 'O' and grid[4]['text'] == 'O' and grid[8]['text'] == 'O' or
           grid[2]['text'] == 'O' and grid[4]['text'] == 'O' and grid[6]['text'] == 'O'):
         flag += 1
-        result = "O"
-    return result
+        return"O"
+
+    if checkforAi == False:
+        if checkForTie(grid):
+            return ' '
+    else:
+        if checkForAiTie(grid):
+            return ' '
 
 def checkForTie(grid):
     global flag
@@ -51,11 +51,13 @@ def checkForTie(grid):
     for vak in grid:
         if vak['text'] == 'O' or vak['text'] == 'X':
             volleVakken+=1
-    if volleVakken == 8:
+    if volleVakken == 9:
         flag += 1
         for vak in grid:
             vak['text'] = "Tie"
         return True
+    else:
+        return False
 
 def checkForAiTie(grid):
     global flag
@@ -63,18 +65,20 @@ def checkForAiTie(grid):
     for vak in grid:
         if vak['text'] == 'O' or vak['text'] == 'X':
             volleVakken+=1
-    if volleVakken == 8:
+    if volleVakken == 9:
         flag += 1
         return True
+    else:
+        return False
 
 def denyAcces(allGrids):
     for grid in allGrids:
-        for vak in allGrids[grid]:
+        for vak in grid:
             vak["state"] = DISABLED
 
 def allowAcces(allGrids):
     for grid in allGrids:
-        for vak in allGrids[grid]:
+        for vak in grid:
             vak["state"] = NORMAL
             vak["bg"] = "gray"
 
@@ -90,23 +94,30 @@ def checkForFullGrid(nextGrid):
     if len(full) == 1 and full != {' '}:
         return True
 
+def checkForEmptyGrid(nextGrid):
+    full = set()
+    for vak in nextGrid:
+        full.add(vak["text"])
+    if len(full) == 1 and full == {' '}:
+        return True
+
 def defineGrid(allGrids, grid, symbol):
     global grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9
-    if allGrids["Grid1"] == grid:
+    if allGrids[0] == grid:
         grid1 = symbol
-    elif allGrids["Grid2"] == grid:
+    elif allGrids[1] == grid:
         grid2 = symbol
-    elif allGrids["Grid3"] == grid:
+    elif allGrids[2] == grid:
         grid3 = symbol
-    elif allGrids["Grid4"] == grid:
+    elif allGrids[3] == grid:
         grid4 = symbol
-    elif allGrids["Grid5"] == grid:
+    elif allGrids[4] == grid:
         grid5 = symbol
-    elif allGrids["Grid6"] == grid:
+    elif allGrids[5] == grid:
         grid6 = symbol
-    elif allGrids["Grid7"] == grid:
+    elif allGrids[6] == grid:
         grid7 = symbol
-    elif allGrids["Grid8"] == grid:
+    elif allGrids[7] == grid:
         grid8 = symbol
     else:
         grid9 = symbol

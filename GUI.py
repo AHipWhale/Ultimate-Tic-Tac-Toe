@@ -56,13 +56,13 @@ def btnClick_PVE(buttons, next_Grid, thisGrid):
         if checkForWinReturn == "X":
             wonGrid(thisGrid, "X")
 
-        nextGrid(next_Grid, thisGrid)
-        if checkForFullGrid(next_Grid):
-            allowAcces(allGrids)
-        # print('before')
-        bestMove(next_Grid, allGrids)
-        # print('after')
-        checkForTie(thisGrid)
+        # nextGrid(next_Grid, thisGrid)
+        # if checkForFullGrid(thisGrid):
+        #     allowAcces(allGrids)
+
+        greyGrid(thisGrid)
+        nextGrid(play_alpha_beta(next_Grid, allGrids), next_Grid)
+
         if checkForGridWin(next_Grid, False) == 'O':
             wonGrid(next_Grid, 'O')
     else:
@@ -358,19 +358,27 @@ def make_Grids():
     grid7 = [G7_button1, G7_button2, G7_button3, G7_button4, G7_button5, G7_button6, G7_button7, G7_button8, G7_button9]
     grid8 = [G8_button1, G8_button2, G8_button3, G8_button4, G8_button5, G8_button6, G8_button7, G8_button8, G8_button9]
     grid9 = [G9_button1, G9_button2, G9_button3, G9_button4, G9_button5, G9_button6, G9_button7, G9_button8, G9_button9]
-    allGrids = {"Grid1":grid1, "Grid2":grid2, "Grid3":grid3, "Grid4":grid4, "Grid5":grid5, "Grid6":grid6, "Grid7":grid7, "Grid8":grid8, "Grid9":grid9}
+    allGrids = [grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9]
 
 def nextGrid(next_Grid, this_grid):
     if singlePlayerMode == False:
         for vak in next_Grid:
             vak["bg"] = "lightgray"
         if this_grid[0] != next_Grid[0]:
-            thisGrid(this_grid)
+            greyGrid(this_grid)
         changeAcces(next_Grid, allGrids)
-    # else:
-        # print(next_Grid, this_grid)
+    else:
+        next_Grid = getNextGrid(next_Grid, allGrids)
+        for vak in next_Grid:
+            vak["bg"] = "lightgray"
+        if this_grid[0] != next_Grid[0]:
+            greyGrid(this_grid)
+        if checkForFullGrid(next_Grid):
+            allowAcces(allGrids)
+        else:
+            changeAcces(next_Grid, allGrids)
 
-def thisGrid(Grid):
+def greyGrid(Grid):
     for vak in Grid:
         vak["bg"] = "gray"
 
