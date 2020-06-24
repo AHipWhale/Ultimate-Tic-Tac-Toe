@@ -5,6 +5,7 @@ from Game import checkForGridWin, checkForFullGrid, checkForEmptyGrid
 current_state = [[],[],[]]
 
 def gridForAi(grid):
+    """Deze functie brengt de grid in kaart voor het Ai algoritme."""
     global current_state
     for firstGrids in range(0,3):
         current_state[0].append(grid[firstGrids])
@@ -15,6 +16,7 @@ def gridForAi(grid):
 
 
 def max_alpha_beta(grid, alpha, beta):
+    """Deze functie is de eerste helft van het minimax alpha beta pruning algoritme"""
     maxv = -2
     px = None
     py = None
@@ -39,7 +41,6 @@ def max_alpha_beta(grid, alpha, beta):
                     py = j
                 current_state[i][j]['text'] = ' '
 
-                # Next two ifs in Max and Min are the only difference between regular algorithm and minimax
                 if maxv >= beta:
                     return (maxv, px, py)
 
@@ -50,6 +51,7 @@ def max_alpha_beta(grid, alpha, beta):
 
 
 def min_alpha_beta(grid, alpha, beta):
+    """Deze functie is de tweede helft van het minimax alpha beta pruning algoritme"""
     minv = 2
 
     qx = None
@@ -84,6 +86,10 @@ def min_alpha_beta(grid, alpha, beta):
     return (minv, qx, qy)
 
 def play_alpha_beta(grid, allGrids):
+    """Deze functie roept het minimax algoritme op.
+      Om verandering te brengen in de keuzen, heb ik ervoor gezorgt dat de eerste keuze in een grid random is,
+      maar niet een vak die lijd naar een volle grid. Als de speler de Ai naar een vol vak stuurt kiest de Ai een random
+      grid om daar zijn keuze in te maken"""
     global player_turn, current_state
     if checkForFullGrid(grid) == True:
         while True:
@@ -110,6 +116,7 @@ def play_alpha_beta(grid, allGrids):
     return px, py
 
 def getNextGrid(grid, allGrids):
+    """Deze fucntie brengt in kaart, wat de volgende grid is waar in gespeelt moet worden."""
     cordsList = [[0, 1, 2],
                  [3, 4, 5],
                  [6, 7, 8]]

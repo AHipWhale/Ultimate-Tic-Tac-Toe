@@ -16,10 +16,14 @@ singlePlayerMode = False
 bclick = '1'
 
 def changeMode(TrueOrFalse):
-    global singlePlayerMode, againstAi
+    """Veranderd de mode van het spel"""
+    global singlePlayerMode
     singlePlayerMode = TrueOrFalse
 
 def btnClick_PVP(buttons, next_Grid, thisGrid):
+    """Deze functie is voor de PVP modus van het spel. De fucntie zet de X en O neer op de plek die de speler heeft gekozen.
+       Vervolgens word er gecheckt of een grid winst, gelijkspel of dat je je symbol niet kan plaatsen
+       want het vak is al een eerder gekozen. En word de volgende grid gehighlight"""
     global bclick, p1, p2
     if buttons["text"] == " " and bclick == '1':
         buttons["text"] = "X"
@@ -47,7 +51,10 @@ def btnClick_PVP(buttons, next_Grid, thisGrid):
     else:
         tkinter.messagebox.showinfo("Ultimate Tic-Tac-Toe", "Button already Clicked!")
 
-def btnClick_PVE(buttons, next_Grid, thisGrid):
+def btnClick_PVAi(buttons, next_Grid, thisGrid):
+    """Deze functie is voor de PVE modus van het spel. De fucntie zet de X neer op de plek die de speler heeft gekozen.
+       Vervolgens word er gecheckt of een grid winst, gelijkspel of dat je je symbol niet kan plaatsen
+       want het vak is al een eerder gekozen. En word de volgende grid gehighlight. Ook word het Ai algortime opgeroepen."""
     global bclick, p1, p2
     if buttons["text"] == " " and bclick == '1':
         buttons["text"] = "X"
@@ -55,10 +62,6 @@ def btnClick_PVE(buttons, next_Grid, thisGrid):
         checkForWinReturn = checkForGridWin(thisGrid, False)
         if checkForWinReturn == "X":
             wonGrid(thisGrid, "X")
-
-        # nextGrid(next_Grid, thisGrid)
-        # if checkForFullGrid(thisGrid):
-        #     allowAcces(allGrids)
 
         greyGrid(thisGrid)
         nextGrid(play_alpha_beta(next_Grid, allGrids), next_Grid)
@@ -69,19 +72,20 @@ def btnClick_PVE(buttons, next_Grid, thisGrid):
         tkinter.messagebox.showinfo("Ultimate Tic-Tac-Toe", "Button already Clicked!")
 
 def btnClick(buttons, next_Grid, thisGrid):
+    """Deze functie kijkt bij elke keer als een knop word aangeklikt, in welke modus het spel zit."""
     if singlePlayerMode == True:
-        btnClick_PVE(buttons, next_Grid, thisGrid)
+        btnClick_PVAi(buttons, next_Grid, thisGrid)
     else:
         btnClick_PVP(buttons, next_Grid, thisGrid)
 
-buttons = StringVar()
-
 def gap(row, column):
+    """Deze functie maakt een gat tussen de grids van het spel."""
     # This bit is for the gap between grids
     label = Label(tk, height=1, width=1)
     label.grid(row=row, column=column)
 
 def make_Grids():
+    """Deze functie maakt de knoppen van het spel aan."""
     H = 2  # hoogte van de knoppen
     W = 4  # breedte van de knoppen
     fg = 'white' # letterkleur
@@ -361,6 +365,8 @@ def make_Grids():
     allGrids = [grid1, grid2, grid3, grid4, grid5, grid6, grid7, grid8, grid9]
 
 def nextGrid(next_Grid, this_grid):
+    """Deze functie highlight de grid waar gespeelt in moet worden.
+       Roept een functie aan die de acces van de knoppen veranderd. Voor de Ai kijkt deze fucntie ook of de grid volzit."""
     if singlePlayerMode == False:
         for vak in next_Grid:
             vak["bg"] = "lightgray"
@@ -379,6 +385,7 @@ def nextGrid(next_Grid, this_grid):
             changeAcces(next_Grid, allGrids)
 
 def greyGrid(Grid):
+    """Deze functie maakt elk vak in de meegegeven grid de kleur grijs."""
     for vak in Grid:
         vak["bg"] = "gray"
 
@@ -421,9 +428,11 @@ def PVP():
     terug_knop.grid(row=3, column=1) 
 
 def hyperlink(url):
+    """Deze functie maakt een hyperlink naar een bepaalde url aan."""
     webbrowser.open_new(url)
 
 def Regels():
+    """Deze functie is voor de pagina 'regels'. Hier word de tekst en de knoppen aangemaakt."""
     regels = Label(tk, text="*Elk klein 3x3 bord word verwezen als klein bord en het grote 3x3 bord word verwezen als een groot bord*\n"
                              "\n- Het spel begint met Player 1 die één van de 81 lege vakjes kiest om daar zijn X te zetten.\n "
                              "Deze zet stuurt de tegenstander naar de relatieve locatie."
@@ -445,10 +454,13 @@ def Regels():
     terug_knop.grid(row=3, column=0)
 
 def destroy_buttons(knoppen):
+    """Deze functie zorgt ervoor dat knoppen worden verwijderd. Bijvoorbeeld bij het switchen van pagina."""
     for knop in knoppen:
         knop.destroy()
 
 def startPagina():
+    """Deze functie maakt de startpagina aan met een welkom tekst en drie knoppen.
+       Één voor de regels en twee om de mode van het spel te veranderen"""
     PVP_button = Button(tk, text="PVP", font='Times 10 bold', bg='gray', fg='white', cursor="hand2", height=1, width=50, command=lambda: (destroy_buttons([PVP_button, PVE_button, Regels_button, tekst]), PVP()))
     PVP_button.grid(row=1, column=0)
 
@@ -462,6 +474,8 @@ def startPagina():
     tekst.grid(row=0, column=0)
 
 def wonGrid(grid, symbol):
+    """Deze functie word aangeroepen als een grid gewonnen is en veranderd de tekst elk vak in die grid naar het symbool.
+       Ook word hier een fucntie aangeroepen die kijkt of het hele spel is gewonnen"""
     for vak in grid:
         vak['text'] = symbol
     checkForGameWin(allGrids, grid, symbol, p1, p2)
